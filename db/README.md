@@ -1,5 +1,5 @@
 # Структура базы данных
-[<img src="https://github.com/Teru3301/FinancialManager/db/other/plan.png"/>]()
+[<img src="https://raw.githubusercontent.com/Teru3301/FinancialManager/dev/db/other/plan.png"/>]()
 
 # Запуск модуля:
 - перейдите в директорию модуля
