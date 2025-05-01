@@ -1,33 +1,36 @@
 package web
 
 import (
+	"github.com/gofiber/fiber/v2"
 	"financialmanager/db/web/handlers"
-	"fmt"
-	"net/http"
 )
 
-// регистрирует обработчики, но не запускает сервер
+var app *fiber.App
+
 func Init() error {
-	fmt.Println("Initializing web routes...")
 
-	http.HandleFunc("/transactions", func(w http.ResponseWriter, r *http.Request) {
-		handlers.Transtestfunc(w, r)
-	})
+	app = fiber.New()
 
-	http.HandleFunc("/goals", func(w http.ResponseWriter, r *http.Request) {
-		handlers.Goalstestfunc(w, r)
-	})
+	api := app.Group("/database")
 
-	http.HandleFunc("/groups", func(w http.ResponseWriter, r *http.Request) {
-		handlers.Groupstestfunc(w, r)
-	})
+	api.Get("/goals", handlers.TestGoals1)
+	api.Post("/goals", handlers.TestGoals2)
+	api.Put("/goals", handlers.TestGoals3)
+
+	api.Get("/groups", handlers.TestGroups1)
+	api.Post("/groups", handlers.TestGroups2)
+	api.Put("/groups", handlers.TestGroups3)
+	
+	api.Get("/transactions", handlers.TestTransactions1)
+	api.Post("/transactions", handlers.TestTransactions2)
+	api.Put("/transactions", handlers.TestTransactions2)
+
 
 	return nil
 }
 
-// Начало прослушки эндпоинтов
 func Listening() error {
-	port := ":8080"
-	fmt.Println("Server is starting on " + port + "...")
-	return http.ListenAndServe(port, nil)
+	return app.Listen(":3000")
 }
+
+
