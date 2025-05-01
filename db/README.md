@@ -14,9 +14,9 @@ go run .
 пока есть только 9 тестовых эндпоинта
 
 ### Для GET
-http://localhost:3000/database/goals
-http://localhost:3000/database/groups
-http://localhost:3000/database/transactions
+- http://localhost:3000/database/goals?uid=1
+- http://localhost:3000/database/groups?uid=1
+- http://localhost:3000/database/transactions?uid=1
 
 ### Для POST адреса те же но для получения ответа нужно скопировать текст и вставить в строку поиска в ручную
 ```html

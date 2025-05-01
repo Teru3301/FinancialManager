@@ -8,12 +8,14 @@ import (
 )
 
 type BaseRequest struct {
-	Token string `json:"token"`
-	UID   string `json:"uid"`
-	GID   string `json:"gid"`
-	TID   string `json:"tid"`
-	GoalID   string `json:"pid"`
-	Other string `json:"other"`
+	Token	string `json:"token"`	//	токен
+	UID		string `json:"uid"`		//	id пользователя
+	GID		string `json:"gid"`		//	id группы
+	TID		string `json:"tid"`		//	id транзакции
+	GoalID	string `json:"goalid"`	//	id цели
+	money	string `json:"money"`	//	деньги
+	transtype	string `json:"transtype"`	//	зачисление/списание
+	descristion	string `json:"description"`	//	описание
 	// другие общие поля
 }
 
@@ -31,13 +33,13 @@ func Parse(c *fiber.Ctx) (*BaseRequest, error) {
         }
     }
 
+	//	парсинг данных из URL
     req.UID = c.Query("uid")
-    req.Other = c.Query("other")
-    if req.Token == "" {
-        req.Token = c.Query("token")
-    }
-	if err := c.BodyParser(&req); err != nil {
-		return nil, fiber.NewError(fiber.StatusBadRequest, "invalid request format")
+	//	парсинг содержимого JSON
+	if c.Method() != fiber.MethodGet {
+        if err := c.BodyParser(&req); err != nil {
+            return nil, fiber.NewError(fiber.StatusBadRequest, "invalid request format")
+        }
     }
 
 	//	Валидация токена

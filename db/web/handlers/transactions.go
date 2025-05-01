@@ -2,36 +2,87 @@ package handlers
 
 import "github.com/gofiber/fiber/v2"
 
-//	GET
-func TestTransactions1(c *fiber.Ctx) error {
+//	Зaпрос списка транзакций
+func GetTransactions(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
         return err	//	ошибка если какие-то данные не валидные в т.ч. токен
 	}
 	
 	//	Логика тут
-	return c.SendString("GET UID:"+req.UID+";")
+	return c.SendString("Metod:GET; UID:"+req.UID+"; Token:"+req.Token+";")
+
+	//	id пользователя
+
+	//	запрос к бд
+
+	//	отправка списка транзакций [id, сумма, тип, описание, дата, время]
 }
 
-//	POST
-func TestTransactions2(c *fiber.Ctx) error {
+//	Добавление новой транзакции
+func AddTransactions(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
         return err	//	ошибка если какие-то данные не валидные в т.ч. токен
 	}
 	
 	//	Логика тут
-	return c.SendString("POST UID:"+req.UID+";")
+	return c.SendString("Metod:POST; UID:"+req.UID+"; Token:"+req.Token+";")
+
+	//	сумма
+	//	тип зачисление/списание
+	//	дата
+	//	время
+	//	описание (не обязательно)
+	//	id транзакции (мб генерируется автомаитчески и глобально)
+	//	id пользователя
+
+	//	запрос к бд
+
+	//	отправка результата добавления (скорее всего всегда TRUE)
 }
 
-//	PUT
-func TestTransactions3(c *fiber.Ctx) error {
+//	Обновление транзакции
+func UpdateTransactions(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
         return err	//	ошибка если какие-то данные не валидные в т.ч. токен
 	}
 	
 	//	Логика тут
-	return c.SendString("PUT UID:"+req.UID+";")
+	return c.SendString("Metod:PUT; UID:"+req.UID+"; Token:"+req.Token+";")
+
+	//	id транзакции
+	//	id пользователя
+	//	новая сумма
+	//	новое описание
+	//	новая дата
+	//	новое время
+
+	//	проверка существования транзакции
+	//	проверка владельца
+	//	запрос к бд на обновление
+
+	//	отправка результата обновления (TRUE, FALSE - если не пройдена проверка или данные не валидны)
+}
+
+//	Удаление транзакции
+func DeleteTransactions(c *fiber.Ctx) error {
+	req, err := Parse(c)
+    if err != nil {
+        return err	//	ошибка если какие-то данные не валидные в т.ч. токен
+	}
+	
+	//	Логика тут
+	return c.SendString("Metod:DELETE; UID:"+req.UID+"; Token:"+req.Token+";")
+
+	//	id транзакции
+	//	id пользователя
+
+	//	проверка существования транзакции
+	//	проверка владельца
+	//	запрос к бд на удаление
+
+	//	отправка результата удаления (TRUE, FALSE - если проверка не пройдена)
 }
 
