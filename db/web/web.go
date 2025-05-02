@@ -24,9 +24,9 @@ func Init() error {
 	api.Put("/groups", handlers.TestGroups3)
 	
 	api.Get("/transactions", handlers.GetTransactions)			//	Получение списка транзакций
-	api.Post("/transactions", handlers.AddTransactions)			//	Добавление новой транзакции
-	api.Put("/transactions", handlers.UpdateTransactions)		//	Обновление информации о транзакции
-	api.Delete("/transactions", handlers.DeleteTransactions)	//	Удаление транзакции
+	api.Post("/transaction", handlers.AddTransactions)			//	Добавление новой транзакции
+	api.Put("/transaction", handlers.UpdateTransactions)		//	Обновление информации о транзакции
+	api.Delete("/transaction", handlers.DeleteTransactions)		//	Удаление транзакции
 
 	return nil
 }

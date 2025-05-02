@@ -26,7 +26,6 @@ func main() {
 	}
 
 	//	Прослушка
-	fmt.Println("Starting server (blocking mode)...")
 	if err := web.Listening(); err != nil {
 		fmt.Printf("Server error: %v\n", err)
 	}

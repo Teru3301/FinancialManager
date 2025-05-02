@@ -16,6 +16,7 @@ type BaseRequest struct {
 	money	string `json:"money"`	//	деньги
 	transtype	string `json:"transtype"`	//	зачисление/списание
 	descristion	string `json:"description"`	//	описание
+	category	string `json:"category"`	//	категория (продукты/одежда/развлечения...)
 	// другие общие поля
 }
 
