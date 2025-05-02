@@ -2,15 +2,22 @@
 [<img src="https://raw.githubusercontent.com/Teru3301/FinancialManager/dev/db/other/plan.png"/>]()
 
 # Запуск модуля:
-- Перед запуском убедитесь что у вас установлены PostgreSQL и Go
+## Перед запуском убедитесь что у вас установлены:
+- PostgreSQL 
+- Go-lang версии 1.24.2 или выше
+## Запуск
 - Перейдите в директорию модуля
 ```bash
 cd FinancialManager/db
 ```
-- Запустите
+- Запустите модуль
 ```go
 go run .
 ```
+
+При отсутствии пользователя или базы данных, будет выполняться попытка их создания. Если они есть, выполнится попытка подключения.
+После успешного подключения к БД и пользователю, запустится регистрация API модуля, затем модуль начнёт прослушивать ```3000``` порт.
+
 
 ### Тестовые эндпоинты
 - http://localhost:3000/database/goals?uid=1
@@ -26,8 +33,8 @@ go run .
 | Метод | Эндпоинт               | Описание                                             | Параметры в URL | Параметры в JSON |
 | ----- | ---------------------- | ---------------------------------------------------- | --------------- | ---------------- |
 | GET   | /database/transactions | Возвращает список всех транзакций пользователя       | uid             | -                |
-| POST  | /database/transaction  | Добавляет новую транзакцию                           | uid             | money, date, time, type, description, category |
-| PUT   | /database/transaction  | Изменение транзакции                                 | uid, tid        | money, date, time, type, description, category |
+| POST  | /database/transaction  | Добавляет новую транзакцию                           | uid             | money, date_time, type, description, category |
+| PUT   | /database/transaction  | Изменение транзакции                                 | uid, tid        | money, date_time, type, description, category |
 | Delete| /database/transaction  | Удаление транзакции                                  | uid, tid        | -                |
 
 ## Группы

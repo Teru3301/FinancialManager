@@ -34,11 +34,13 @@ func Init() error {
 
 	err := tryConnect()
 	if err == nil {
+		CreateTables()
 		return nil
 	}
 
 	log.Printf("Database connection failed, attempting to create: %v", err)
 	if err := CreateDB(); err != nil {
+		CreateTables()
 		return fmt.Errorf("Failed to create database: %v", err)
 	}
 
@@ -60,6 +62,7 @@ func tryConnect() error {
 	defer conn.Release()
 
 	log.Println("Connection to DB success")
+
 	return nil
 }
 
@@ -71,3 +74,6 @@ func CloseDB() {
 		log.Println("DB connection pool closed")
 	}
 }
+
+
+
