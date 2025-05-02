@@ -10,7 +10,7 @@ func TestGroups1(c *fiber.Ctx) error {
 	}
 	
 	//	Логика тут
-	return c.SendString("GET UID:"+req.UID+";")
+	return c.SendString("GET UID:"+string(req.UID)+";")
 }
 
 //	POST
@@ -21,7 +21,7 @@ func TestGroups2(c *fiber.Ctx) error {
 	}
 	
 	//	Логика тут
-	return c.SendString("POST UID:"+req.UID+";")
+	return c.SendString("POST UID:"+string(req.UID)+";")
 }
 
 //	PUT
@@ -32,6 +32,6 @@ func TestGroups3(c *fiber.Ctx) error {
 	}
 	
 	//	Логика тут
-	return c.SendString("PUT UID:"+req.UID+";")
+	return c.SendString("PUT UID:"+string(req.UID)+";")
 }
 

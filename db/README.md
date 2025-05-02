@@ -30,30 +30,48 @@ go run .
 
 ## Транзакции
 
-| Метод | Эндпоинт               | Описание                                             | Параметры в URL | Параметры в JSON |
-| ----- | ---------------------- | ---------------------------------------------------- | --------------- | ---------------- |
-| GET   | /database/transactions | Возвращает список всех транзакций пользователя       | uid             | -                |
-| POST  | /database/transaction  | Добавляет новую транзакцию                           | uid             | money, date_time, type, description, category |
-| PUT   | /database/transaction  | Изменение транзакции                                 | uid, tid        | money, date_time, type, description, category |
-| Delete| /database/transaction  | Удаление транзакции                                  | uid, tid        | -                |
+| Метод | Эндпоинт               | Описание                                             | Параметры в URL | Принимаемый JSON | Возвращаемый JSON |
+| ----- | ---------------------- | ---------------------------------------------------- | --------------- | ---------------- | --- |
+| GET   | /database/transactions | Возвращает список всех транзакций пользователя       | uid             | -                | [tid, category, date_time, description, money, type] |
+| POST  | /database/transaction  | Добавляет новую транзакцию                           | uid             | money, date_time, type, description, category | - |
+| PUT   | /database/transaction  | Изменение транзакции                                 | uid, tid        | money, date_time, type, description, category | - |
+| Delete| /database/transaction  | Удаление транзакции                                  | uid, tid        | -                | - |
 
-## Группы
+## Запросы для тестов
 
-| Метод | Эндпоинт               | Описание                                             | Параметры в URL | Параметры в JSON |
-| ----- | ---------------------- | ---------------------------------------------------- | --------------- | ---------------- |
-| GET   | /database/groups       | Возвращает список всех групп в которых состоит пользователь | uid      | -                |
-| POST  | /database/group        | Создаёт новую группу                                 | uid, gid        | name, description|
-| PUT   | /database/group        | Изменяет данные группы                               | uid, gid        | name, description|
-| Delete| /database/group        | Удаляет группу                                       | uid, gid        | -                |
-
-## Цели
-
-| Метод | Эндпоинт               | Описание                                             | Параметры в URL | Параметры в JSON |
-| ----- | ---------------------- | ---------------------------------------------------- | --------------- | ---------------- |
-| GET   | /database/goals        | Возвращает список целей пользователя                 | uid             | -                |
-| POST  | /database/goals        | Создаёт новую пользовательскую цель                  | uid             | name, description, money, datestart, datefinish |
-| PUT   | /database/goals        | Изменяет пользовательскую цель                       | uid, goalid     | name, description, money, datestart, datefinish |
-| Delete| /database/goals        | Удаляет цель                                         | uid, goalid     | -                |
-
-
-
+#### POST
+- добавление транзакции
+```bash
+curl -X POST http://localhost:3000/database/transaction\?uid\=1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "money": 30.5,
+    "type": "income",
+    "category": "степендия",
+    "description": "...",
+    "date_time": "2026-05-02T18:45:00"
+  }'
+```
+#### PUT
+- обновление транзакции
+```bash
+curl -X PUT http://localhost:3000/database/transaction\?uid\=1\&tid\=1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "money": 3500.75,
+    "type": "expense",
+    "category": "учеба",
+    "description": "оплата учебных материалов",
+    "date_time": "2026-06-01T12:30:00"
+  }'
+```
+#### DELETE
+- удаление транзакции
+```bash
+curl -X DELETE http://localhost:3000/database/transaction\?uid\=1\&tid\=1 
+```
+#### GET 
+- получение списка транзакций
+```bash
+curl http://localhost:3000/database/transactions\?uid\=1
+```

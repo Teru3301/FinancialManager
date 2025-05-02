@@ -40,9 +40,9 @@ func Init() error {
 
 	log.Printf("Database connection failed, attempting to create: %v", err)
 	if err := CreateDB(); err != nil {
-		CreateTables()
 		return fmt.Errorf("Failed to create database: %v", err)
 	}
+	CreateTables()
 
 	return tryConnect()
 }

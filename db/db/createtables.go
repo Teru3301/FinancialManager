@@ -25,10 +25,12 @@ var transactionsTable = TableSchema{
 	Columns: []ColumnSchema{
 		{Name: "tid", Type: "SERIAL PRIMARY KEY"},
 		{Name: "uid", Type: "INTEGER NOT NULL"},
-		{Name: "money", Type: "NUMERIC(10,2) NOT NULL"},
-		{Name: "time", Type: "TIMESTAMP NOT NULL"},
-		{Name: "descroption", Type: "TEXT"},
+		//{Name: "money", Type: "NUMERIC(10,2) NOT NULL"},
+		{Name: "money", Type: "REAL NOT NULL"},
+		{Name: "date_time", Type: "TIMESTAMP NOT NULL"},
+		{Name: "description", Type: "TEXT"},
 		{Name: "type", Type: "VARCHAR(50) NOT NULL"},
+		{Name: "category", Type: "VARCHAR(50) NOT NULL"},
 	},
 }
 

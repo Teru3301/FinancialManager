@@ -4,19 +4,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"log"
 	"strings"
+	"strconv"
 	"fmt"
 )
 
 type BaseRequest struct {
-	Token	string `json:"token"`	//	токен
-	UID		string `json:"uid"`		//	id пользователя
-	GID		string `json:"gid"`		//	id группы
-	TID		string `json:"tid"`		//	id транзакции
-	GoalID	string `json:"goalid"`	//	id цели
-	money	string `json:"money"`	//	деньги
-	transtype	string `json:"transtype"`	//	зачисление/списание
-	descristion	string `json:"description"`	//	описание
-	category	string `json:"category"`	//	категория (продукты/одежда/развлечения...)
+	Token		string	`json:"token"`	//	токен
+	UID			int 	`json:"uid"`		//	id пользователя
+	GID			int 	`json:"gid"`		//	id группы
+	TID         int		`json:"tid"`
+	GoalID		int 	`json:"goalid"`	//	id цели
+	Money       float64 `json:"money"`
+	Transtype	string	`json:"type"`	//	зачисление/списание
+	Description	string	`json:"description"`	//	описание
+	Category	string	`json:"category"`	//	категория (продукты/одежда/развлечения...)
+	Date_time	string	`json:"date_time"`
 	// другие общие поля
 }
 
@@ -35,9 +37,24 @@ func Parse(c *fiber.Ctx) (*BaseRequest, error) {
     }
 
 	//	парсинг данных из URL
-    req.UID = c.Query("uid")
+	uidStr := c.Query("uid")
+	if uidStr != "" {
+		if uidInt, err := strconv.Atoi(uidStr); err == nil {
+			req.UID = uidInt
+		} else {
+			return nil, fiber.NewError(fiber.StatusBadRequest, "Invalid UID format")
+		}
+	}
+	tidStr := c.Query("tid")
+	if tidStr != "" {
+		if tidInt, err := strconv.Atoi(tidStr); err == nil {
+			req.TID = tidInt
+		} else {
+			return nil, fiber.NewError(fiber.StatusBadRequest, "Invalid UID format")
+		}
+	}
 	//	парсинг содержимого JSON
-	if c.Method() != fiber.MethodGet {
+	if c.Method() != fiber.MethodGet && c.Method() != fiber.MethodDelete {
         if err := c.BodyParser(&req); err != nil {
             return nil, fiber.NewError(fiber.StatusBadRequest, "invalid request format")
         }
@@ -51,7 +68,7 @@ func Parse(c *fiber.Ctx) (*BaseRequest, error) {
 	}
 
     // Проверка прочих обязательных полей
-    if req.UID == "" {
+    if req.UID == 0 {
         fmt.Println("Че с юидом?")
     }
 

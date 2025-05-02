@@ -1,88 +1,134 @@
 package handlers
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"time"
+	"log"
+	"financialmanager/db/db"
+	"strconv"
+)
 
-//	Зaпрос списка транзакций
+
+// Запрос списка транзакций
 func GetTransactions(c *fiber.Ctx) error {
 	req, err := Parse(c)
-    if err != nil {
-        return err	//	ошибка если какие-то данные не валидные в т.ч. токен
+	if err != nil {
+		return c.Status(400).SendString("Invalid request: " + err.Error())
 	}
-	
-	//	Логика тут
-	return c.SendString("Metod:GET; UID:"+req.UID+"; Token:"+req.Token+";")
 
-	//	id пользователя
+	// Поиск транзакций
+	rows, err := db.Select(db.SelectQuery{
+		Table:   "transactions",
+		Columns: []string{"tid", "money", "type", "category", "date_time", "description"},
+		Condition: map[string]interface{}{
+			"uid": req.UID,
+		},
+	})
+	if err != nil {
+		log.Fatalf("Ошибка при выполнении SELECT: %v", err)
+	}
 
-	//	запрос к бд
+	var transactions []map[string]interface{}
 
-	//	отправка списка транзакций [id, сумма, тип, описание, дата, время, категория]
+	for _, row := range rows {
+		tid, _ := strconv.Atoi(row[0])
+		money, _ := strconv.ParseFloat(row[1], 64)	
+		transaction := map[string]interface{}{
+			"tid":         tid,
+			"money":       money,
+			"type":        row[2],   // type
+			"category":    row[3],   // category
+			"date_time":   row[4],   // date_time
+			"description": row[5],   // description
+		}
+		transactions = append(transactions, transaction)
+	}
+
+	return c.JSON(transactions)
 }
+
 
 //	Добавление новой транзакции
-func AddTransactions(c *fiber.Ctx) error {
+func AddTransaction(c *fiber.Ctx) error {
 	req, err := Parse(c)
-    if err != nil {
-        return err	//	ошибка если какие-то данные не валидные в т.ч. токен
+	if err != nil {
+		return c.Status(400).SendString("Invalid request: " + err.Error())
 	}
-	
-	//	Логика тут
-	return c.SendString("Metod:POST; UID:"+req.UID+"; Token:"+req.Token+";")
 
-	//	сумма
-	//	тип зачисление/списание
-	//	время и дата
-	//	описание (не обязательно)
-	//	id транзакции (мб генерируется автомаитчески и глобально)
-	//	id пользователя
-	//	категория
+	_, err = db.Insert(db.InsertQuery{
+		Table: "transactions",
+		Data: map[string]interface{}{
+			"uid":         req.UID,
+			"money":       req.Money,
+			"date_time":   time.Now(),
+			"type":        req.Transtype,
+			"category":    req.Category,
+			"description": req.Description,
+		},
+	})
 
-	//	запрос к бд
+	if err != nil {
+		return c.Status(500).SendString("DB insert error: " + err.Error())
+	}
 
-	//	отправка результата добавления (скорее всего всегда TRUE)
+	return c.Status(201).SendString("Transaction added successfully")
 }
+
 
 //	Обновление транзакции
-func UpdateTransactions(c *fiber.Ctx) error {
+func UpdateTransaction(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
-        return err	//	ошибка если какие-то данные не валидные в т.ч. токен
+        return err
 	}
 	
-	//	Логика тут
-	return c.SendString("Metod:PUT; UID:"+req.UID+"; Token:"+req.Token+";")
+	updateData := map[string]interface{}{
+		"money":       req.Money,
+		"category":    req.Category,
+		"description": req.Description,
+		"date_time":   req.Date_time,
+	}
 
-	//	id транзакции
-	//	id пользователя
-	//	новая сумма
-	//	новое описание
-	//	новое время и дата
-	//	новая категория
+	// Создаем запрос на обновление
+	updateQuery := db.UpdateQuery{
+		Table:   "transactions",
+		Data:    updateData,
+		Condition: map[string]interface{}{
+			"tid": req.TID,
+			"uid": req.UID,
+		},
+	}
 
-	//	проверка существования транзакции
-	//	проверка владельца
-	//	запрос к бд на обновление
+	_, err = db.Update(updateQuery)
+	if err != nil {
+		return c.Status(500).SendString("Error updating transaction: " + err.Error())
+	}
 
-	//	отправка результата обновления (TRUE, FALSE - если не пройдена проверка или данные не валидны)
+	return c.Status(200).SendString("Updating success")
 }
+
 
 //	Удаление транзакции
-func DeleteTransactions(c *fiber.Ctx) error {
+func DeleteTransaction(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
-        return err	//	ошибка если какие-то данные не валидные в т.ч. токен
+        return err
 	}
-	
-	//	Логика тут
-	return c.SendString("Metod:DELETE; UID:"+req.UID+"; Token:"+req.Token+";")
 
-	//	id транзакции
-	//	id пользователя
+	deleteQuery := db.DeleteQuery{
+		Table: "transactions",
+		Condition: map[string]interface{}{
+			"tid": req.TID,
+			"uid": req.UID,
+		},
+	}
 
-	//	проверка существования транзакции
-	//	проверка владельца
-	//	запрос к бд на удаление
+	_, err = db.Delete(deleteQuery)
+	if err != nil {
+		return c.Status(500).SendString("Error deleting transaction: " + err.Error())
+	}
 
-	//	отправка результата удаления (TRUE, FALSE - если проверка не пройдена)
+	return c.Status(200).SendString("Transaction deleted successfully")
 }
+
 
