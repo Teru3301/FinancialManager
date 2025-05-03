@@ -34,10 +34,30 @@ var transactionsTable = TableSchema{
 	},
 }
 
+//	цели
+var goalsTable = TableSchema{
+	Name: "goals",
+	Columns: []ColumnSchema{
+		{Name: "goalid", Type: "SERIAL PRIMARY KEY"},
+		{Name: "uid", Type: "INTEGER NOT NULL"},
+		//{Name: "money", Type: "NUMERIC(10,2) NOT NULL"},
+		{Name: "money", Type: "REAL NOT NULL"},
+		{Name: "goal_money", Type: "REAL NOT NULL"},
+		{Name: "name", Type: "TEXT"},
+		{Name: "description", Type: "TEXT"},
+		{Name: "date_time_start", Type: "TIMESTAMP NOT NULL"},
+		{Name: "date_time_finish", Type: "TIMESTAMP NOT NULL"},
+	},
+}
+
+
 func CreateTables() error {
 	ctx := context.Background()
 	
 	if err := EnsureTableExists(ctx, transactionsTable); err != nil {
+		log.Fatalf("DB schema check failed: %v", err)
+	}
+	if err := EnsureTableExists(ctx, goalsTable); err != nil {
 		log.Fatalf("DB schema check failed: %v", err)
 	}
 

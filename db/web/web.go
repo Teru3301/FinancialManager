@@ -15,10 +15,10 @@ func Init() error {
 
 	api := app.Group("/database")
 
-	api.Get("/goals", handlers.TestGoals1)
-	api.Post("/goal", handlers.TestGoals2)
-	api.Put("/goal", handlers.TestGoals3)
-	api.Delete("/goal", handlers.TestGoals3)
+	api.Get("/goals", handlers.GetGoals)
+	api.Post("/goal", handlers.AddGoal)
+	api.Put("/goal", handlers.UpdateGoal)
+	api.Delete("/goal", handlers.DeleteGoal)
 
 	api.Get("/transactions", handlers.GetTransactions)			//	Получение списка транзакций
 	api.Post("/transaction", handlers.AddTransaction)			//	Добавление новой транзакции

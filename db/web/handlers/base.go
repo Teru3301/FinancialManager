@@ -15,10 +15,12 @@ type BaseRequest struct {
 	TID         int		`json:"tid"`
 	GoalID		int 	`json:"goalid"`	//	id цели
 	Money       float64 `json:"money"`
-	Transtype	string	`json:"type"`	//	зачисление/списание
+	Name		string	`json:"name"`
 	Description	string	`json:"description"`	//	описание
 	Category	string	`json:"category"`	//	категория (продукты/одежда/развлечения...)
 	Date_time	string	`json:"date_time"`
+	Date_time_finish	string	`json:"date_time_finish"`
+	Transtype	string	`json:"type"`	//	зачисление/списание
 	// другие общие поля
 }
 
@@ -49,6 +51,14 @@ func Parse(c *fiber.Ctx) (*BaseRequest, error) {
 	if tidStr != "" {
 		if tidInt, err := strconv.Atoi(tidStr); err == nil {
 			req.TID = tidInt
+		} else {
+			return nil, fiber.NewError(fiber.StatusBadRequest, "Invalid UID format")
+		}
+	}
+	goalidStr := c.Query("goalid")
+	if goalidStr != "" {
+		if goalidInt, err := strconv.Atoi(goalidStr); err == nil {
+			req.GoalID = goalidInt
 		} else {
 			return nil, fiber.NewError(fiber.StatusBadRequest, "Invalid UID format")
 		}

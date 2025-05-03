@@ -91,25 +91,20 @@ func UpdateTransaction(c *fiber.Ctx) error {
         return err
 	}
 	
-	updateData := map[string]interface{}{
-		"money":       req.Money,
-		"category":    req.Category,
-		"description": req.Description,
-		"date_time":   req.Date_time,
-		"type": req.Transtype,
-	}
-
-	// Создаем запрос на обновление
-	updateQuery := db.UpdateQuery{
+	_, err = db.Update(db.UpdateQuery{
 		Table:   "transactions",
-		Data:    updateData,
+		Data:    map[string]interface{}{
+			"money":       req.Money,
+			"category":    req.Category,
+			"description": req.Description,
+			"date_time":   req.Date_time,
+			"type": req.Transtype,
+		},
 		Condition: map[string]interface{}{
 			"tid": req.TID,
 			"uid": req.UID,
 		},
-	}
-
-	_, err = db.Update(updateQuery)
+	})
 	if err != nil {
 		return c.Status(500).SendString("Error updating transaction: " + err.Error())
 	}
