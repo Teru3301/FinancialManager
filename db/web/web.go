@@ -20,11 +20,6 @@ func Init() error {
 	api.Put("/goal", handlers.TestGoals3)
 	api.Delete("/goal", handlers.TestGoals3)
 
-	api.Get("/groups", handlers.TestGroups1)
-	api.Post("/group", handlers.TestGroups2)
-	api.Put("/group", handlers.TestGroups3)
-	api.Delete("/group", handlers.TestGroups3)
-	
 	api.Get("/transactions", handlers.GetTransactions)			//	Получение списка транзакций
 	api.Post("/transaction", handlers.AddTransaction)			//	Добавление новой транзакции
 	api.Put("/transaction", handlers.UpdateTransaction)			//	Обновление информации о транзакции

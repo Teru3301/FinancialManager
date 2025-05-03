@@ -9,7 +9,10 @@ import (
 )
 
 
-// Запрос списка транзакций
+//	Запрос списка транзакций
+/*
+*	Возвращает JSON со списком транзакций пользователя по UID и подробной информацией по каждой
+*/
 func GetTransactions(c *fiber.Ctx) error {
 	req, err := Parse(c)
 	if err != nil {
@@ -49,6 +52,9 @@ func GetTransactions(c *fiber.Ctx) error {
 
 
 //	Добавление новой транзакции
+/*
+*	Принимает JSON с транзакцией сохраняет её в БД
+*/
 func AddTransaction(c *fiber.Ctx) error {
 	req, err := Parse(c)
 	if err != nil {
@@ -76,6 +82,9 @@ func AddTransaction(c *fiber.Ctx) error {
 
 
 //	Обновление транзакции
+/*
+*	Принимает JSON и обновляет каждое поле существующей транзакции значением из него
+*/
 func UpdateTransaction(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
@@ -87,6 +96,7 @@ func UpdateTransaction(c *fiber.Ctx) error {
 		"category":    req.Category,
 		"description": req.Description,
 		"date_time":   req.Date_time,
+		"type": req.Transtype,
 	}
 
 	// Создаем запрос на обновление
@@ -109,6 +119,9 @@ func UpdateTransaction(c *fiber.Ctx) error {
 
 
 //	Удаление транзакции
+/*
+*	Удаляет транзакцию по TID
+*/
 func DeleteTransaction(c *fiber.Ctx) error {
 	req, err := Parse(c)
     if err != nil {
