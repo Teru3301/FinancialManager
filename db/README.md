@@ -19,11 +19,6 @@ go run .
 После успешного подключения к БД и пользователю, запустится регистрация API модуля, затем модуль начнёт прослушивать ```3000``` порт.
 
 
-### Тестовые эндпоинты
-- http://localhost:3000/database/goals?uid=1
-- http://localhost:3000/database/groups?uid=1
-- http://localhost:3000/database/transactions?uid=1
-
 # Предоставляемое модулем API
 
 ### Каждый запрос должен содержать в заголовке JWT токен
@@ -37,10 +32,9 @@ go run .
 | PUT   | /database/transaction  | Изменение транзакции                                 | uid, tid        | money, date_time, type, description, category | - |
 | Delete| /database/transaction  | Удаление транзакции                                  | uid, tid        | -                | - |
 
-## Запросы для тестов
+### Примеры запросов
 
 #### POST
-- добавление транзакции
 ```bash
 curl -X POST http://localhost:3000/database/transaction\?uid\=1 \
   -H "Content-Type: application/json" \
@@ -53,7 +47,6 @@ curl -X POST http://localhost:3000/database/transaction\?uid\=1 \
   }'
 ```
 #### PUT
-- обновление транзакции
 ```bash
 curl -X PUT http://localhost:3000/database/transaction\?uid\=1\&tid\=1 \
   -H "Content-Type: application/json" \
@@ -66,12 +59,56 @@ curl -X PUT http://localhost:3000/database/transaction\?uid\=1\&tid\=1 \
   }'
 ```
 #### DELETE
-- удаление транзакции
 ```bash
 curl -X DELETE http://localhost:3000/database/transaction\?uid\=1\&tid\=1 
 ```
 #### GET 
-- получение списка транзакций
 ```bash
 curl http://localhost:3000/database/transactions\?uid\=1
 ```
+
+## Цели
+
+| Метод | Эндпоинт        | Описание                                  | Параметры в URL | Принимаемый JSON | Возвращаемый JSON |
+| ----- | --------------- | ----------------------------------------- | --------------- | ---------------- | --- |
+| GET   | /database/goals | Возвращает список всех целей пользователя | uid             | -                | [goalid, money, goal_money, name, description, date_time_start, date_time_finish] |
+| POST  | /database/goal  | Добавляет новую цуль                      | uid             | goal_money, name, description, date_time_start, date_time_finish | - |
+| PUT   | /database/goal  | Изменение цели                            | uid, goalid     | goal_money, name, description, date_time_start, date_time_finish | - |
+| Delete| /database/goal  | Удаление цули                             | uid, goalid     | -                | - |
+
+### Примеры запросов
+
+#### POST
+```bash
+curl -X POST http://localhost:3000/database/goal\?uid\=1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "money": 10000000.0,
+    "name": "Дом",
+    "description": "Вилла в дубаях",
+    "date_time": "2025-12-31T23:59:00",
+    "date_time_finish": "2025-12-31T23:59:00"
+}'
+```
+#### PUT
+```bash
+curl -X PUT http://localhost:3000/database/goal\?uid\=1\&goalid\=1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "money": 99999999.0,
+    "name": "Квартира",
+    "description": "Сарайчик на окраине Москвы",
+    "date_time": "2025-12-31T23:59:00",
+    "date_time_finish": "2025-12-31T23:59:00"
+}'
+```
+#### DELETE
+```bash
+curl -X DELETE http://localhost:3000/database/goal\?uid\=1\&goalid\=1 
+```
+#### GET
+```bash
+curl http://localhost:3000/database/goals\?uid\=1
+```
+
+
